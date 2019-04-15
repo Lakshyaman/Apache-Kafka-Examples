@@ -1,3 +1,5 @@
 rootProject.name = 'apache-kafka-examples'
 include 'streams-examples'
+include 'producer-examples'
+include 'consumer-examples'
 
