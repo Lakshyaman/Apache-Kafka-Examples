@@ -16,7 +16,7 @@ import java.util.stream.LongStream;
 public class PrimesProducer implements StringProducer
 {
 
-    private static final Duration TIME_BETWEEN_PRIMES = Duration.ofMillis(1);
+    private static final Duration TIME_BETWEEN_PRIMES = Duration.ofMillis(500);
 
     private final AtomicLong count = new AtomicLong();
 

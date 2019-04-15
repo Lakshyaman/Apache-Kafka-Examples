@@ -36,15 +36,21 @@ bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-fac
   * primes
 
 ### 3. Run producers
-* Run one or more in the **producer-examples module**
-  * Producers send messages to a topic
+* Producers send messages to a topic
+
+
+* Currently support the following examples:
+  * primes `./gradlew :producer-examples:primes`
+  * stdin `./gradlew :producer-examples:stdin`
 
 ### 4. Run consumers
-* See **consumer-examples module**
-  * Consumers subscribe to topic(s)
-  * Consumers read messages from subscribed topics
+* Consumers subscribe to topic(s)
+* Consumers read messages from subscribed topics
 
-### 5. Run streams (if needed)
-* See **streams-examples module**
-  * Streams read messages from input topics and send transformed messages to output topics
-  * I.e. streams create *pipelines*
+
+* Currently support the following examples:
+  * stdout `./gradlew :consumer-examples:stdout`
+
+### 5. Run streams
+* Streams read messages from input topics and send transformed messages to output topics
+* I.e. streams create *pipelines*

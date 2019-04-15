@@ -32,7 +32,7 @@ public class StdInProducer implements StringProducer
     @Override
     public KeyValuePair<String, String> next()
     {
-        return KeyValuePair.of(String.format("stdin_%d", count.incrementAndGet()), scanner.next());
+        return KeyValuePair.of(String.format("stdin_%d", count.incrementAndGet()), scanner.nextLine());
     }
 
 }
