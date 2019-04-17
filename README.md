@@ -4,7 +4,11 @@ Example Consumers, Producers, Streams etc.
 
 [![Build Status](https://travis-ci.com/wilmol/Apache-Kafka-Examples.svg?branch=master)](https://travis-ci.com/wilmol/Apache-Kafka-Examples) [![codecov](https://codecov.io/gh/wilmol/Apache-Kafka-Examples/branch/master/graph/badge.svg)](https://codecov.io/gh/wilmol/Apache-Kafka-Examples)
 
-### 1. Install 
+### Requirements
+* Java 8 lts
+* Kafka
+
+### 1. Install Kafka
 * Download Kafka 
 
 https://www.apache.org/dyn/closer.cgi?path=/kafka/2.2.0/kafka_2.12-2.2.0.tgz

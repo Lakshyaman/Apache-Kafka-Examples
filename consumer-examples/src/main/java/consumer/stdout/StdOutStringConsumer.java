@@ -1,5 +1,6 @@
 package consumer.stdout;
 
+import com.google.common.collect.ImmutableList;
 import org.apache.kafka.clients.CommonClientConfigs;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -20,7 +21,7 @@ public class StdOutStringConsumer
 {
 
     // currently subscribes to all available topics
-    private static final List<String> TOPICS = List.of("stdin", "primes");
+    private static final List<String> TOPICS = ImmutableList.of("stdin", "primes");
 
     private static final Duration POLLING_DURATION = Duration.ofSeconds(1);
 
