@@ -31,26 +31,48 @@ bin/kafka-server-start.sh config/server.properties
 ```
 bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic <TOPIC_NAME>
 ```
-* Currently support examples for the following topics:
+
+**Example topics:**
   * stdin
   * primes
 
 ### 3. Run producers
-* Producers send messages to a topic
+* Producers - send messages to a topic
 
+**Example producers:**
 
-* Currently support the following examples:
-  * primes `./gradlew :producer-examples:primes`
-  * stdin `./gradlew :producer-examples:stdin`
+* stdin - sends terminal input to the stdin topic
+```
+./gradlew :producer-examples:stdin
+```
+
+* primes - sends the prime numbers to the primes topic
+```
+./gradlew :producer-examples:primes
+```
 
 ### 4. Run consumers
-* Consumers subscribe to topic(s)
-* Consumers read messages from subscribed topics
+* Consumers - read messages from subscribed topics
 
+**Example consumers:**
 
-* Currently support the following examples:
-  * stdout `./gradlew :consumer-examples:stdout`
+* stdout - sends messages to system out
+```
+./gradlew :consumer-examples:stdout
+```
 
 ### 5. Run streams
-* Streams read messages from input topics and send transformed messages to output topics
+* Streams - read messages from input topics and send transformed messages to output topics
 * I.e. streams create *pipelines*
+
+**Example streams:**
+  
+* identity - sends input back into the given topic (creating an infinite cycle)
+```
+./gradlew :streams-examples:identity -Ptopic=<TOPIC_NAME>
+```
+
+### Kill processes
+```
+killall -9 java
+```
