@@ -1,0 +1,4 @@
+dependencies {
+    implementation group: 'org.apache.kafka', name: 'kafka-streams', version: project.kafkaVersion
+    implementation group: 'org.apache.kafka', name: 'kafka-clients', version: project.kafkaVersion
+}

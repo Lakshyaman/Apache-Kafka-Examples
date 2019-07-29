@@ -1,6 +1,5 @@
 dependencies {
-    // https://mvnrepository.com/artifact/org.apache.kafka/kafka-streams
-    compile group: 'org.apache.kafka', name: 'kafka-streams', version: project.kafkaVersion
+    implementation group: 'org.apache.kafka', name: 'kafka-streams', version: project.kafkaVersion
 }
 
 task identity(type: JavaExec) {

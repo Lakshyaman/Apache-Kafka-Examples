@@ -1,44 +1,94 @@
+buildscript {
+    repositories {
+        maven {
+            url 'https://plugins.gradle.org/m2/'
+        }
+    }
+    dependencies {
+        classpath 'com.diffplug.spotless:spotless-plugin-gradle:3.22.0'
+        classpath 'gradle.plugin.com.github.spotbugs:spotbugs-gradle-plugin:1.6.8'
+    }
+}
+
 allprojects {
-    group 'com.wilmol'
+    group 'wilmol'
     version '1.0'
 }
 
 subprojects {
     apply plugin: 'java'
-    apply plugin: 'idea'
-    apply plugin: 'jacoco'
-
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
-
     repositories {
         mavenCentral()
     }
-
     ext {
         kafkaVersion = '2.2.0'
     }
 
-    dependencies {
-        // https://mvnrepository.com/artifact/com.google.guava/guava
-        compile group: 'com.google.guava', name: 'guava', version: '27.1-jre'
-        // https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core
-        compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.11.2'
-        // https://projectlombok.org/setup/gradle
-        compileOnly 'org.projectlombok:lombok:1.18.6'
-        annotationProcessor 'org.projectlombok:lombok:1.18.6'
-
-        // https://mvnrepository.com/artifact/junit/junit
-        testCompile group: 'junit', name: 'junit', version: '4.12'
-        // https://mvnrepository.com/artifact/org.hamcrest/hamcrest-core
-        testCompile group: 'org.hamcrest', name: 'hamcrest-core', version: '2.1'
+    // Spotless (code formatting)
+    apply plugin: 'com.diffplug.gradle.spotless'
+    spotless {
+        java {
+            removeUnusedImports()
+            googleJavaFormat()
+        }
     }
 
+    // Checkstyle (static analysis - code quality/style)
+    apply plugin: 'checkstyle'
+    checkstyle {
+        toolVersion = '8.21'
+        configFile = rootProject.file('gradle/checkstyle/checkstyle.xml')
+        maxErrors = 0
+        maxWarnings = 0
+        ignoreFailures = false
+    }
+
+    // SpotBugs (static analysis - find possible bugs, performance issues etc.)
+    apply plugin: 'com.github.spotbugs'
+    spotbugs {
+        toolVersion = '3.1.12'
+        effort = 'max'
+        reportLevel = 'low'
+        ignoreFailures = false
+    }
+    tasks.withType(com.github.spotbugs.SpotBugsTask) {
+        reports {
+            html.enabled = true
+            xml.enabled = false
+        }
+    }
+
+    // Tests
+    test {
+        maxParallelForks = Runtime.runtime.availableProcessors().intdiv(2) ?: 1
+        useJUnitPlatform()
+        testLogging {
+            exceptionFormat 'full'
+            events 'failed'
+        }
+    }
+
+    // JaCoCo (code coverage reporting)
+    apply plugin: 'jacoco'
     jacocoTestReport {
         reports {
-            xml.enabled true
-            html.enabled true
-            csv.enabled true
+            xml.enabled = true
+            html.enabled = true
+            csv.enabled = false
         }
+    }
+    check.dependsOn jacocoTestReport
+
+    dependencies {
+        implementation group: 'com.google.code.findbugs', name: 'annotations', version: '3.0.1'
+        implementation group: 'com.google.guava', name: 'guava', version: '28.0-jre'
+        implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.11.2'
+
+        testImplementation group: 'com.google.truth', name: 'truth', version: '0.45'
+        testImplementation group: 'org.mockito', name: 'mockito-core', version: '3.0.0'
+        testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: '5.5.0-RC1'
+        testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.5.0-RC1'
     }
 }

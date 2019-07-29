@@ -1,6 +1,5 @@
 dependencies {
-    // https://mvnrepository.com/artifact/org.apache.kafka/kafka-clients
-    compile group: 'org.apache.kafka', name: 'kafka-clients', version: project.kafkaVersion
+    implementation group: 'org.apache.kafka', name: 'kafka-clients', version: project.kafkaVersion
 }
 
 task primes(type: JavaExec) {

@@ -29,7 +29,7 @@ bin/kafka-server-start.sh config/server.properties
 
 *(Installation steps taken from https://kafka.apache.org/quickstart)*
 
-### 2. Create topics
+### 2. Create topics 
 * Must create the topics which clients (producers/consumers etc.) will connect to ahead of time
 * Just run:
 ```
