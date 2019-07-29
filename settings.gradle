@@ -1,6 +1,5 @@
 rootProject.name = 'apache-kafka-examples'
-include 'streams-examples'
-include 'producer-examples'
-include 'consumer-examples'
-include 'kafka-dropwizard-server'
-
+include 'kafka-cli:streams-examples'
+include 'kafka-cli:producer-examples'
+include 'kafka-cli:consumer-examples'
+include 'kafka-as-a-service:kafka-dropwizard-server'
