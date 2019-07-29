@@ -1,3 +1,5 @@
+import static service.DropWizardService.register;
+
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.dropwizard.Application;
 import io.dropwizard.Configuration;
@@ -8,17 +10,17 @@ import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.streams.KafkaStreams;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import service.ConsumerService;
-import service.DropWizardKafkaService;
+import service.DropWizardService;
 import service.ProducerService;
 import service.StreamsService;
 
 /** Created by wilmol on 2019-07-29. */
 public class DropWizardApp extends Application {
 
-  private final Logger log = LoggerFactory.getLogger(DropWizardApp.class);
+  private final Logger log = LogManager.getLogger();
 
   @SuppressFBWarnings(
       value = "NP_NULL_PARAM_DEREF_ALL_TARGETS_DANGEROUS",
@@ -37,13 +39,13 @@ public class DropWizardApp extends Application {
     KafkaStreams streams = new KafkaStreams(null, new Properties());
 
     // Create services
-    DropWizardKafkaService producerService = new ProducerService(producer, "producerTopic");
-    DropWizardKafkaService consumerService = new ConsumerService(consumer, "consumerTopic");
-    DropWizardKafkaService streamsService = new StreamsService(streams);
+    DropWizardService producerService = new ProducerService(producer, "producerTopic");
+    DropWizardService consumerService = new ConsumerService(consumer, "consumerTopic");
+    DropWizardService streamsService = new StreamsService(streams);
 
     // Register services
-    producerService.registerWithin(environment);
-    consumerService.registerWithin(environment);
-    streamsService.registerWithin(environment);
+    register(producerService, environment);
+    register(consumerService, environment);
+    register(streamsService, environment);
   }
 }

@@ -2,22 +2,24 @@ package service;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import adapter.ManagedService;
 import com.codahale.metrics.health.HealthCheck;
 import com.google.common.util.concurrent.AbstractIdleService;
+import io.dropwizard.lifecycle.Managed;
 import org.apache.kafka.streams.KafkaStreams;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
- * Kafka {@link KafkaStreams} example service.
+ * Example {@link KafkaStreams} service.
  *
- * <p>Since {@link KafkaStreams} manages its own threading {@link AbstractIdleService} is used.
+ * <p>Since {@code KafkaStreams} manages its own threading {@link AbstractIdleService} is used.
  *
  * <p>Created by wilmol on 2019-07-29.
  */
-public class StreamsService extends AbstractIdleService implements DropWizardKafkaService {
+public class StreamsService extends AbstractIdleService implements DropWizardService {
 
-  private final Logger log = LoggerFactory.getLogger(ConsumerService.class);
+  private final Logger log = LogManager.getLogger();
 
   private final KafkaStreams kafkaStreams;
 
@@ -38,10 +40,16 @@ public class StreamsService extends AbstractIdleService implements DropWizardKaf
     log.info("Closed Kafka Streams");
   }
 
+  @Override
+  public Managed managed() {
+    return new ManagedService(this, name());
+  }
+
   /**
-   * Override the default implementation because {@link KafkaStreams} manages its own threading.
+   * Note {@link KafkaStreams.State#isRunning()} method is used because {@code KafkaStreams} manages
+   * its own threading.
    *
-   * @return {@link KafkaStreams} as a {@link HealthCheck}
+   * @return {@link KafkaStreams} {@link HealthCheck}
    */
   @Override
   public HealthCheck healthCheck() {
