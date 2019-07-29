@@ -1,12 +1,11 @@
 # Apache-Kafka-Examples
 
-Example Consumers, Producers, Streams etc.
-
 [![Build Status](https://travis-ci.com/wilmol/Apache-Kafka-Examples.svg?branch=master)](https://travis-ci.com/wilmol/Apache-Kafka-Examples) [![codecov](https://codecov.io/gh/wilmol/Apache-Kafka-Examples/branch/master/graph/badge.svg)](https://codecov.io/gh/wilmol/Apache-Kafka-Examples)
 
-### Requirements
-* Java 8 lts
-* Kafka
+## Run Kafka on Server (to deploy in AWS etc.)
+- See DropWizard server example module
+
+## Run Kafka in CLI:
 
 ### 1. Install Kafka
 * Download Kafka 
