@@ -1,6 +1,4 @@
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import healthcheck.ServiceHealthCheck;
-import healthcheck.StreamsHealthCheck;
 import io.dropwizard.Application;
 import io.dropwizard.Configuration;
 import io.dropwizard.setup.Environment;
@@ -13,7 +11,7 @@ import org.apache.kafka.streams.KafkaStreams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import service.ConsumerService;
-import service.ManagedService;
+import service.DropWizardKafkaService;
 import service.ProducerService;
 import service.StreamsService;
 
@@ -33,23 +31,19 @@ public class DropWizardApp extends Application {
   public void run(Configuration configuration, Environment environment) {
     log.info("Configuration: [{}]", configuration);
 
-    // Create your producers, consumers, streams etc.
+    // Create producers, consumers, streams etc.
     Producer<String, String> producer = new KafkaProducer<>(new Properties());
     Consumer<String, String> consumer = new KafkaConsumer<>(new Properties());
     KafkaStreams streams = new KafkaStreams(null, new Properties());
 
-    // Create adapters
-    ProducerService producerService = new ProducerService(producer, "producerTopic");
-    ConsumerService consumerService = new ConsumerService(consumer, "consumerTopic");
+    // Create services
+    DropWizardKafkaService producerService = new ProducerService(producer, "producerTopic");
+    DropWizardKafkaService consumerService = new ConsumerService(consumer, "consumerTopic");
+    DropWizardKafkaService streamsService = new StreamsService(streams);
 
     // Register services
-    environment.lifecycle().manage(new ManagedService(producerService, "producer"));
-    environment.lifecycle().manage(new ManagedService(consumerService, "consumer"));
-    environment.lifecycle().manage(new ManagedService(new StreamsService(streams), "streams"));
-
-    // Register health checks
-    environment.healthChecks().register("producer", new ServiceHealthCheck(producerService));
-    environment.healthChecks().register("consumer", new ServiceHealthCheck(consumerService));
-    environment.healthChecks().register("consumer", new StreamsHealthCheck(streams));
+    producerService.registerWithin(environment);
+    consumerService.registerWithin(environment);
+    streamsService.registerWithin(environment);
   }
 }

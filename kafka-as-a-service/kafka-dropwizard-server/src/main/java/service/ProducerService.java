@@ -4,21 +4,21 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.util.concurrent.AbstractExecutionThreadService;
 import com.google.common.util.concurrent.AbstractScheduledService;
-import com.google.common.util.concurrent.Service;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Adapts a {@link Producer} to a {@link Service} so it can be run as a service.
+ * Kafka {@link Producer} example service.
  *
  * <p>In this case, the producer is always sending, hence the service type is {@link
- * AbstractExecutionThreadService}. Another option could be {@link AbstractScheduledService}.
+ * AbstractExecutionThreadService}. Another option is {@link AbstractScheduledService}.
  *
  * <p>Created by wilmol on 2019-07-29.
  */
-public class ProducerService extends AbstractExecutionThreadService {
+public class ProducerService extends AbstractExecutionThreadService
+    implements DropWizardKafkaService {
 
   private final Logger log = LoggerFactory.getLogger(ConsumerService.class);
 
@@ -43,5 +43,10 @@ public class ProducerService extends AbstractExecutionThreadService {
   protected void shutDown() {
     kafkaProducer.close();
     log.info("Closed Kafka Producer");
+  }
+
+  @Override
+  public String name() {
+    return serviceName();
   }
 }
